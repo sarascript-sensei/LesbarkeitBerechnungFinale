@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Input</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/style.css}"  media="screen">
+    <link rel="stylesheet" th:href="@{/main.css}" media="screen">
+    <script class="u-script" type="text/javascript" th:src="@{/jquery.js}" defer=""></script>
+    <script class="u-script" type="text/javascript" th:src="@{/script.js}" defer=""></script>
+    <script class="u-script" type="text/javascript" th:src="@{/validator.js}" defer=""></script>
+</head>
+<body>
+<nav class="u-menu u-menu-dropdown u-offcanvas u-menu-1">
+    <div class="menu-collapse" style="font-size: 1rem; letter-spacing: 0px;">
+        <a class="u-button-style u-custom-left-right-menu-spacing u-custom-padding-bottom u-custom-top-bottom-menu-spacing u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" href="#">
+            <svg class="u-svg-link" viewBox="0 0 24 24"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#menu-hamburger"></use></svg>
+            <svg class="u-svg-content" version="1.1" id="menu-hamburger" viewBox="0 0 16 16" x="0px" y="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg"><g><rect y="1" width="16" height="2"></rect><rect y="7" width="16" height="2"></rect><rect y="13" width="16" height="2"></rect>
+            </g></svg>
+        </a>
+    </div>
+    <div class="u-nav-container">
+        <ul class="u-nav u-unstyled u-nav-1"><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" th:href="@{/}" style="padding: 10px 20px;">Über project</a>
+        </li><li class="u-nav-item"><a class="u-button-style u-nav-link u-text-active-palette-1-base u-text-hover-palette-2-base" th:href="@{/text_analyse}" style="padding: 10px 20px;">Berechnung</a>
+        </li></ul>
+    </div>
+    <div class="u-nav-container-collapse">
+        <div class="u-black u-container-style u-inner-container-layout u-opacity u-opacity-95 u-sidenav">
+            <div class="u-inner-container-layout u-sidenav-overflow">
+                <div class="u-menu-close"></div>
+                <ul class="u-align-center u-nav u-popupmenu-items u-unstyled u-nav-2"><li class="u-nav-item"><a class="u-button-style u-nav-link" th:href="@{/}">Über project</a>
+                </li><li class="u-nav-item"><a class="u-button-style u-nav-link" th:href="@{/text_analyse}">Berechnung</a>
+                </li></ul>
+            </div>
+        </div>
+        <div class="u-black u-menu-overlay u-opacity u-opacity-70"></div>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="text-center">Text analyse Form</h1>
+    <form method="post" th:action="@{/text_analyse}" th:object="${text_analyse}" action="/process-text" autocomplete="off" >
+        <div class="form-group">
+            <label for="textInput">Schreiben Sie bitte einen Text(mehr dann 100 Wörter):</label>
+            <textarea class="form-control" th:field="*{content}" oninput="checkTextareaLength(); updateWordCount()" id="textInput" name="textInput"  rows="10"></textarea>
+            <div>Wörter zahlen: <span id="wordCount"></span></div>
+        </div>
+        <button type="submit" id="submitButton" th:disabled="${content == null or #strings.length(content) &lt; 100}" class="btn btn-primary">Speichern</button>
+    </form>
+    <script th:inline="javascript">
+        function checkTextareaLength() {
+            var submitButton = document.getElementById("submitButton");
+            var textareaContent = document.querySelector('textarea[name="content"]').value;
+            var words = textareaContent.split(/\s+/);
+            if (words.length >= 100) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
+        function updateWordCount() {
+            var wordCount = document.getElementById("wordCount");
+            var textareaContent = document.querySelector('textarea[name="content"]').value;
+            var words = textareaContent.split(/\s+/);
+            wordCount.innerText = words.length;
+        }
+    </script>
+</div>
+</body>
+</html>
