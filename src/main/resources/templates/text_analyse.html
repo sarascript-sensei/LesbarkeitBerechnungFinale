@@ -40,7 +40,7 @@
     <h1 class="text-center">Text analyse Form</h1>
     <form method="post" th:action="@{/text_analyse}" th:object="${text_analyse}" action="/process-text" autocomplete="off" >
         <div class="form-group">
-            <label for="textInput">Schreiben Sie bitte einen Text(mehr dann 100 Wörter):</label>
+            <label for="textInput">Schreiben Sie bitte einen Text(mehr dann 20 Wörter):</label>
             <textarea class="form-control" th:field="*{content}" oninput="checkTextareaLength(); updateWordCount()" id="textInput" name="textInput"  rows="10"></textarea>
             <div>Wörter zahlen: <span id="wordCount"></span></div>
         </div>
@@ -51,7 +51,7 @@
             var submitButton = document.getElementById("submitButton");
             var textareaContent = document.querySelector('textarea[name="content"]').value;
             var words = textareaContent.split(/\s+/);
-            if (words.length >= 100) {
+            if (words.length >= 20) {
                 submitButton.disabled = false;
             } else {
                 submitButton.disabled = true;

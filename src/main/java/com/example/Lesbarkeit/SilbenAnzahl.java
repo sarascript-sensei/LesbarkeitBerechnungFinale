@@ -11,14 +11,10 @@ public class SilbenAnzahl {
     // Vokale, die für die Zählung von Silben verwendet werden
     private static final String VOWELS = "aeiouyäöü";
 
-    // Ausnahmefälle, bei denen mehrere Buchstaben als eine Silbe zählen
-    private static final String[] EXCEPTIONS = {"sch", "ch", "ck", "ph", "qu", "th", "wh"};
-
     /**
-
-     Diese Methode zählt die Anzahl der Silben in einem Wort.
-     @param word das zu zählende Wort
-     @return die Anzahl der Silben im Wort
+     * Diese Methode zählt die Anzahl der Silben in einem Wort.
+     * @param word das zu zählende Wort
+     * @return die Anzahl der Silben im Wort
      */
     public static int countSyllablesInWord(String word) {
         word = word.toLowerCase();
@@ -35,14 +31,12 @@ public class SilbenAnzahl {
                 lastCharWasVowel = false;
             }
         }
-        for (String exception : EXCEPTIONS) {
-            if (word.endsWith(exception)) {
-                syllableCount--;
-                break;
-            }
+        if (syllableCount == 0) {
+            syllableCount = 1;
         }
         return syllableCount;
     }
+
     /**
 
      Diese Methode zählt die Anzahl der Silben in einem Satz.
