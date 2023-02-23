@@ -36,7 +36,7 @@ public class Text_Analyse_Controller {
         model.addAttribute("getAge", textAnalyse.getAge());
         model.addAttribute("getFlesch_Kincaid_Grade_Level", textAnalyse.getFlesch_Kincaid_Grade_Level());
         model.addAttribute("getLIX", textAnalyse.getLIX());
-        model.addAttribute("calculateWienerSachtextforme", textAnalyse.calculateWienerSachtextformel());
+        model.addAttribute("calculateWienerSachtextformel", textAnalyse.calculateWienerSachtextformel());
         model.addAttribute("getNumberOfWordsPerSentence", textAnalyse.getNumberOfWordsPerSentence());
         model.addAttribute("precentageOfComplexWords", textAnalyse.precentageOfComplexWords());
         model.addAttribute("getGunningFog", textAnalyse.getGunningFog());

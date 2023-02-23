@@ -15,46 +15,43 @@ import java.util.ArrayList;
  */
 
 public class Sentence {
-    private TokenizerFactory tokenizerFactory; // TokenizerFactory-Objekt
-    private SentenceModel sentenceModel; // SentenceModel-Objekt
-
-    public Sentence() {
-        // TokenizerFactory- und SentenceModel-Objekte initialisieren
-        tokenizerFactory = new IndoEuropeanTokenizerFactory(); // Initialisiere TokenizerFactory
-        sentenceModel = new IndoEuropeanSentenceModel(); // Initialisiere SentenceModel
-    }
+    private static TokenizerFactory tokenizerFactory = new IndoEuropeanTokenizerFactory();
+    private static SentenceModel sentenceModel = new IndoEuropeanSentenceModel();
 
     public String[] getSentences(String text) {
-        // Text in Tokens aufteilen
-        ArrayList<String> tokenList = new ArrayList<>();
-        ArrayList<String> whiteList = new ArrayList<>();
+
+        String[] whitespaces = new String[0];
+
+        ArrayList<String> tokenList = new ArrayList<String>();
+        ArrayList<String> whitespaceList = new ArrayList<String>();
+
         Tokenizer tokenizer = tokenizerFactory.tokenizer(text.toCharArray(), 0, text.length());
-        tokenizer.tokenize(tokenList, whiteList);
+        tokenizer.tokenize(tokenList, whitespaceList);
 
-        // Satzgrenzen bestimmen
-        String[] tokens = tokenList.toArray(new String[0]);
-        String[] whites = whiteList.toArray(new String[0]);
-        int[] sentenceBoundaries = sentenceModel.boundaryIndices(tokens, whites);
+        String[] tokens = new String[tokenList.size()];
+        whitespaces = new String[whitespaceList.size()];
 
-        // Wenn es keine Satzgrenzen gibt, gib ein leeres Array zurück
-        if (sentenceBoundaries.length < 1) {
-            return new String[0];
-        }
+        tokenList.toArray(tokens);
+        whitespaceList.toArray(whitespaces);
 
-        // Text in Sätze aufteilen
+        int[] sentenceBoundaries = sentenceModel.boundaryIndices(tokens, whitespaces);
+
         String[] sentences = new String[sentenceBoundaries.length];
-        int sentenceStartToken = 0;
-        for (int i = 0; i < sentenceBoundaries.length; i++) {
-            int sentenceEndToken = sentenceBoundaries[i];
-            StringBuilder sentence = new StringBuilder();
-            for (int j = sentenceStartToken; j <= sentenceEndToken; j++) {
-                sentence.append(tokens[j]).append(whites[j + 1]);
+
+        for (int i = 0; i < sentenceBoundaries.length; ++i) {
+            int start = sentenceBoundaries[i];
+            int end = i == sentenceBoundaries.length - 1
+                    ? tokens.length - whitespaces.length + 1
+                    : sentenceBoundaries[i + 1];
+
+            StringBuilder sb = new StringBuilder();
+            for (int j = start; j < end; ++j) {
+                sb.append(tokens[j]);
             }
-            sentences[i] = sentence.toString().trim();
-            sentenceStartToken = sentenceEndToken + 1;
+
+            sentences[i] = sb.toString().trim();
         }
 
-        // Gib das Array der Sätze zurück
         return sentences;
     }
 }
